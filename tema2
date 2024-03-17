@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+int charToInt(char c) {
+    if (c >= '0' && c <= '9') {
+        return c - '0';
+    } else if (c >= 'A' && c <= 'Z') {
+        return c - 'A' + 10;
+    } else if (c >= 'a' && c <= 'z') {
+        return c - 'a' + 10;
+    }
+    return -1; // Caracter invalid
+}
+
+char intToChar(int n) {
+    if (n >= 0 && n <= 9) {
+        return char('0' + n);
+    } else {
+        return char('A' + n - 10);
+    }
+}
+
+string convertBase(string num, int b1, int b2) {
+    int decimalNum = 0;
+    
+    for (int i = num.length() - 1, j = 0; i >= 0; --i, ++j) {
+        decimalNum += charToInt(num[i]) * pow(b1, j);
+    }
+    
+    string result = "";
+    while (decimalNum > 0) {
+        result = intToChar(decimalNum % b2) + result;
+        decimalNum /= b2;
+    }
+    
+    return result;
+}
+
+int main() {
+    int b1, b2;
+    string num;
+    
+    cout << "Introduceți baza numărului de intrare (de la 2 la 36): ";
+    cin >> b1;
+    if (b1 < 2 || b1 > 36) {
+        cout << "Baza trebuie să fie între 2 și 36." << endl;
+        return 1;
+    }
+    
+    cout << "Introduceți baza în care să fie convertit numărul (de la 2 la 36): ";
+    cin >> b2;
+    if (b2 < 2 || b2 > 36) {
+        cout << "Baza trebuie să fie între 2 și 36." << endl;
+        return 1;
+    }
+    
+    cout << "Introduceți numărul: ";
+    cin >> num;
+    
+    for (char c : num) {
+        int digit = charToInt(c);
+        if (digit == -1 || digit >= b1) {
+            cout << "Numărul introdus nu este valid în baza specificată." << endl;
+            return 1;
+        }
+    }
+    
+    string result = convertBase(num, b1, b2);
+    cout << "Numărul " << num << " în baza " << b1 << " este " << result << " în baza " << b2 << "." << endl;
+    
+    return 0;
+}
