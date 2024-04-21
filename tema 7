@@ -1,0 +1,109 @@
+Tema 7-cripto
+Iulia și Andrei folosesc criptosistemul RSA. Iulia are cheia publică 𝐾𝑒𝐼 = (𝑛𝐼 = 9991, 𝑒𝐼 = 3917). (a) Determinați cheia privată a Iuliei. (b) Decriptați mesajul BMHA_X primit de Iulia, știind că lungimea blocurilor în clar este 2 și a celor criptate este 3
+Rezolvare:
+Pentru a rezolva această problemă, avem nevoie să aplicăm algoritmul RSA invers pentru a determina cheia privată a Iuliei și apoi să decriptăm mesajul dat.
+
+ (a) Determinarea cheii private a Iuliei (𝑑𝐼):
+
+1. Formula pentru calculul cheii private (𝑑) în RSA este:
+   [ 𝑑 = 𝑒^{−1} mod 𝜙(𝑛) ]
+   unde:
+   -  𝑒 este exponentul public,
+   - 𝑛 este produsul primelor p și q, și
+   - 𝜙(𝑛) este funcția lui Euler, care pentru numere prime este ((𝑝−1)(𝑞−1)).
+
+2. Avem ( 𝑒𝐼 = 3917 ) și ( 𝑛𝐼 = 9991 ).
+3. Trebuie să găsim p și q pentru a calcula ( 𝜙(𝑛) ) și apoi să găsim ( 𝑑 ).
+
+Găsirea p și q:
+( 𝑛𝐼 = p  q = 9991 )
+
+Prima metodă de a găsi p și q este să căutăm factori primi ai lui 9991.
+
+9991 = 97 * 103
+
+Așadar,( p = 97 ) și \( q = 103 ).
+
+Calcularea lui 𝜙(𝑛):
+
+𝜙(𝑛) = (𝑝−1)(𝑞−1)
+𝜙(9991) = (97-1)(103-1)
+𝜙(9991) = 96  102 = 9792
+
+
+ Calcularea lui 𝑑𝐼:
+
+𝑑𝐼 = 𝑒^{−1} mod 9792
+𝑑𝐼 = 3917^{−1} \mod 9792
+
+
+Calculând inversul modular al lui (𝑒) în raport cu (𝜙(𝑛)):
+
+Folosind algoritmul lui Euclid extins, putem găsi inversul modular al lui (𝑒) în raport cu (𝜙(𝑛)). Algoritmul lui Euclid extins rezolvă ecuația:
+[ 𝑒𝑥 + 𝜙(𝑛)𝑦 = 1 ]
+unde (𝑥) va fi inversul modular al lui (𝑒) (adică (𝑑𝐼)).
+9792 = 2 * 3917 + 958
+3917 = 4 * 958 + 43
+958 = 22 * 43 + 32
+43 = 1 * 32 + 11
+32 = 2 * 11 + 10
+11 = 1 * 10 + 1
+```
+
+Acum aplicăm algoritmul înapoi pentru a găsi (𝑑𝐼):
+1 = 11 - 1 * 10
+1 = 11 - 1 * (32 - 2 * 11)
+1 = -1 * 32 + 3 * 11
+1 = -1 * 32 + 3 * (43 - 1 * 32)
+1 = 3 * 43 - 4 * 32
+1 = 3 * 43 - 4 * (958 - 22 * 43)
+1 = -4 * 958 + 91 * 43
+1 = -4 * 958 + 91 * (3917 - 4 * 958)
+1 = 91 * 3917 - 368 * 958
+1 = 91 * 3917 - 368 * (9792 - 2 * 3917)
+1 = -368 * 9792 + 827 * 3917
+```
+
+Acum putem vedea că 827 este coeficientul lui (𝑒) și 3917 este coeficientul lui (𝜙(𝑛)), așadar:
+
+[ 827  3917  congruent 1 \p mod{9792} ]
+
+Deci cheia privată a Iuliei, (𝑑𝐼), este (827).
+
+ (b) Decriptarea mesajului dat:
+
+Mesajul criptat este "BMHA_X" și avem informația că lungimea blocurilor în clar este 2 și lungimea blocurilor criptate este 3. Pentru a decripta mesajul, îl vom împărți în blocuri criptate de lungime 3 și vom aplica formula de decriptare RSA:
+
+
+Pasul 1: Transformarea mesajului în numere
+
+Fiecare bloc criptat trebuie transformat în numărul corespunzător.
+
+- "BM" -> 42, 77
+- "HA" -> 34, 65
+- "_X" -> 26, 88
+
+ Pasul 2: Decriptarea fiecărui bloc
+
+Fiecare bloc criptat este ridicat la puterea cheii private și apoi se ia modulul \(n\) (9991).
+
+1. "BM" -> 42, 77
+   42^{827} mod 9991 = 3720
+   77^{827} mod 9991 = 3265
+2. "HA" -> 34, 65
+  
+   34^{827} mod 9991 = 6988
+  
+   65^{827} mod 9991 = 4665
+  
+3. "_X" -> 26, 88
+ 26^{827} mod 9991 = 6784
+88^{827} mod 9991 = 9717
+
+Pasul 3: Transformarea numerelor în text clar
+
+Transformăm aceste numere înapoi în text clar folosind alfabetul:
+
+- 3720, 3265 -> "DK"
+- 6988, 4665 -> "IU"
+- 6784, 9717 -> "HV"
